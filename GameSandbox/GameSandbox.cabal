@@ -1,0 +1,36 @@
+cabal-version: 3.4
+
+name: GameSandbox
+version: 0.1.0.0
+synopsis: A sandbox for tinkering with making a game.
+license: MIT
+license-file: LICENSE
+author: Matthew Stewart
+maintainer: m.scott.stewart@gmail.com
+category: Game
+build-type: Simple
+
+flag ndebug
+  Description: Disables debugging.
+  Default: False
+
+common common
+  hs-source-dirs: src
+  ghc-options: -Wall -Wno-unused-matches -fno-ignore-asserts
+  default-language: GHC2021
+  default-extensions:
+    BlockArguments
+    CPP
+    DataKinds
+    DuplicateRecordFields
+    OverloadedRecordDot
+    TypeApplications
+  build-depends:
+    base ^>=4.18.2.1
+
+executable GameSandbox
+    import: common
+    main-is: GameSandbox.hs
+    other-modules:
+    if flag(ndebug)
+      cpp-options: -DNDEBUG
