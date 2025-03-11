@@ -12,18 +12,21 @@
       GameSandbox = hs.callCabal2nix "GameSandbox" ./GameSandbox {};
     in {
 
-      packages.x86_64-linux = { inherit GameSandbox; };
+      packages.x86_64-linux = {
+        inherit GameSandbox pkgs;
 
-      packages.x86_64-linux.default = hs.shellFor {
-        packages = p: [ ];
-        nativeBuildInputs =
-          (with hs; [
-            cabal-install
-            haskell-language-server
-          ]) ++
-          (with pkgs; [
-          ]);
+        default = hs.shellFor {
+          packages = p: [ ];
+          nativeBuildInputs =
+            (with hs; [
+              cabal-install
+              haskell-language-server
+            ]) ++
+            (with pkgs; [
+              pkg-config # Used by cabal to find SDL2
+              SDL2
+            ]);
+        };
       };
-
     };
 }
